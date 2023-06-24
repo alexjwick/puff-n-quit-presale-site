@@ -9,9 +9,7 @@
   --color-grey-subtext: #717171;
 
   /*container class width will change with screen size*/
-  --container-width-lg: 75%;
-  --container-width-md: 80%;
-  --container-width-sm: 85%;
+  --container-width: 94%;
 }
 
 /* Global Styles */
@@ -23,17 +21,7 @@ body {
 
 .container {
   margin: 0 auto;
-  width: var(--container-width-sm);
-}
-@media only screen and (min-width: 600px) {
-  .container {
-    width: var(--container-width-md);
-  }
-}
-@media only screen and (min-width: 1024px) {
-  .container {
-    width: var(--container-width-lg);
-  }
+  width: var(--container-width);
 }
 
 /* Typography */
@@ -91,8 +79,8 @@ p {
 }
 
 .header {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
   background: linear-gradient(60deg, var(--color-red), var(--color-orange));
   background: conic-gradient(#ff3666, #ff6b00);
   -webkit-background-clip: text;
