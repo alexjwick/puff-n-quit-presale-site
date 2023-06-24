@@ -90,12 +90,13 @@ p {
 }
 
 .tagline {
-  margin-top: 6rem;
+  margin-top: 3.5rem;
   margin-bottom: 3rem;
   max-width: 900px;
 }
 @media only screen and (min-width: 600px) {
   .tagline {
+    margin-top: 6rem;
     margin-bottom: 4rem;
   }
 }
