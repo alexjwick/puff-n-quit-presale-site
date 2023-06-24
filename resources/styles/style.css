@@ -165,4 +165,16 @@ body {
   .description {
     font-size: 1rem;
   }
+  .email-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .email-input, .submit-button {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  .submit-button {
+    margin-left: 0;
+  }
 }
+
