@@ -49,6 +49,7 @@ window.onload = () => {
     handleEmailFormSubmit(emailInput);
   });
 
+  // Add event listener for email input field for enter key
   emailInput.addEventListener("keypress", (event) => {
     // If the user presses the "Enter" key on the keyboard
     if (event.key === "Enter") {
@@ -56,6 +57,18 @@ window.onload = () => {
       handleEmailFormSubmit(emailInput);
     }
   });
+
+  // Add event listener for email input field for input
+  emailInput.addEventListener("input", (event) => {
+    if (emailInput.value.trim() === "") {
+      submitButton.disabled = true;
+    } else {
+      submitButton.disabled = false;
+    }
+  });
+
+  // Initially disable the button
+  submitButton.disabled = emailInput.value.trim() === "" ? true : false;
 };
 
 /**
