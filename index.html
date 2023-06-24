@@ -9,23 +9,32 @@
   <body>
     <div class="container">
       <header>
-        <h1>Puff 'N Quit</h1>
+        <h1 class="header">Puff 'N Quit</h1>
       </header>
+
       <main>
-        <h2>
+        <h2 class="tagline">
           Where technology meets <span class="styled-text">tenacity</span>, and
           quitting becomes <span class="styled-text">achievable</span>.
         </h2>
-        <p>
+
+        <p class="description">
           Puff ‘N Quit is developing a smart vape designed to help you reduce or
           eliminate your vaping habit.
         </p>
-        <form id="signup-form">
-          <input type="email" placeholder="Enter your email" />
-          <input type="submit" value="Join waitlist" />
-        </form>
+
+        <div class="email-form">
+          <input
+            class="email-input"
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <button class="submit-button">Join waitlist</button>
+        </div>
       </main>
     </div>
   </body>
-  <script src="./resources/scripts/main.js"></script>
+  <script src="dist/bundle.js"></script>
+  <script type="module" src="./resources/scripts/main.js"></script>
 </html>
