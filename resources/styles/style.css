@@ -57,10 +57,21 @@ h1 {
 h2 {
   font-weight: 700;
   font-size: 2.5rem;
+  line-height: 1.25;
 }
 @media only screen and (min-width: 600px) {
   h2 {
+    font-size: 3rem;
+  }
+}
+@media only screen and (min-width: 768px) {
+  h2 {
     font-size: 4rem;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  h2 {
+    font-size: 4.5rem;
   }
 }
 
@@ -75,7 +86,7 @@ p {
 }
 @media only screen and (min-width: 1024px) {
   p {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 }
 
@@ -93,6 +104,12 @@ p {
 .tagline {
   margin-top: 6rem;
   margin-bottom: 3rem;
+  max-width: 900px;
+}
+@media only screen and (min-width: 600px) {
+  .tagline {
+    margin-bottom: 4rem;
+  }
 }
 
 .tagline .styled-text {
@@ -110,6 +127,7 @@ p {
   color: var(--color-grey-subtext);
   margin-top: 3rem;
   margin-bottom: 3rem;
+  max-width: 750px;
 }
 
 .email-form {
@@ -117,8 +135,9 @@ p {
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+  max-width: 750px;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 768px) {
   .email-form {
     flex-direction: row;
   }
@@ -129,6 +148,12 @@ p {
   border: 1px solid;
   padding: 1rem 0.5rem;
 }
+@media only screen and (min-width: 768px) {
+  .email-input {
+    width: 100%;
+    max-width: 600px;
+  }
+}
 
 .email-input::placeholder {
   color: #bebebe;
@@ -136,22 +161,41 @@ p {
   font-weight: 200;
 }
 
+.email-input:invalid {
+  border-color: #ff3666;
+}
+
 .submit-button {
   border: 1px solid;
   padding: 1rem;
   color: var(--color-background);
   background: linear-gradient(65deg, var(--color-red), var(--color-orange));
-  font-weight: 200;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+@media only screen and (min-width: 768px) {
+  .submit-button {
+    width: 9.5rem;
+  }
 }
 
 .submit-button:disabled {
   color: #909090;
   background: #c3c3c3;
+  font-weight: 200;
 }
 
-.submit-button:hover {
+.submit-button:hover:not(:disabled) {
+  cursor: pointer;
   background: var(--color-red);
-  color: #dfdfdf;
   border-color: transparent;
-  transition: all 400ms ease;
+}
+
+@media only screen and (min-width: 600px) {
+  .email-form,
+  .email-input,
+  .email-input::placeholder,
+  .submit-button {
+    font-size: 1.25rem;
+  }
 }
