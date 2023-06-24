@@ -26,18 +26,18 @@ body {
 
 /* Typography */
 
-h1 {
+h1 a {
   font-family: "Lexend", sans-serif;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 @media only screen and (min-width: 600px) {
-  h1 {
-    font-size: 2rem;
+  h1 a {
+    font-size: 2.25rem;
   }
 }
 @media only screen and (min-width: 1024px) {
-  h1 {
+  h1 a {
     font-size: 2.5rem;
   }
 }
@@ -179,11 +179,9 @@ p {
   border-color: transparent;
 }
 
-@media only screen and (min-width: 600px) {
-  .email-form,
-  .email-input,
-  .email-input::placeholder,
-  .submit-button {
-    font-size: 1.25rem;
-  }
+.email-form,
+.email-input,
+.email-input::placeholder,
+.submit-button {
+  font-size: 1.25rem;
 }
