@@ -101,15 +101,35 @@ p {
   }
 }
 
-.tagline .styled-text {
-  /*gradient text*/
-  background: linear-gradient(65deg, var(--color-red), var(--color-orange));
-  /* in some browsers conic-gradients will not show. add a linear-gradient as a fallback to a conic-gradient. */
-  background: conic-gradient(#ff3666, #ff6b00);
+.styled-text {
+  --bg-size: 400%;
+  background: linear-gradient(
+      90deg,
+      var(--color-red),
+      var(--color-orange),
+      var(--color-red)
+    )
+    0 0 / 400% 100%;
+
+  background-clip: text;
   -webkit-background-clip: text;
   -moz-background-clip: text;
+
+  color: transparent;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
+}
+
+/* Only enable animation without reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .styled-text {
+    animation: move-bg 8s linear infinite;
+  }
+  @keyframes move-bg {
+    to {
+      background-position: var(--bg-size) 0;
+    }
+  }
 }
 
 .description {
