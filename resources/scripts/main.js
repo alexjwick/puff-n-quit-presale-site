@@ -15,18 +15,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+let emailFormElement = null;
+let submittedMessageElement = null;
+
 window.onload = () => {
   console.log("Page loaded.");
   // Get email form
-  const emailForm = document.querySelector(".email-form");
+  emailFormElement = document.querySelector(".email-form");
+  submittedMessageElement = document.querySelector(".submitted-message");
 
   // Check if email form exists
-  if (!emailForm) {
+  if (!emailFormElement) {
     return console.error("Form with class 'email-form' not found.");
   }
 
+  // Check if submitted message exists
+  if (!submittedMessageElement) {
+    return console.error("Element with class 'submitted-message' not found.");
+  }
+
   // Get email input field
-  const emailInput = emailForm.querySelector(".email-input");
+  const emailInput = emailFormElement.querySelector(".email-input");
 
   // Check if email input field exists
   if (!emailInput) {
@@ -34,14 +43,12 @@ window.onload = () => {
   }
 
   // Get submit button
-  const submitButton = emailForm.querySelector(".submit-button");
+  const submitButton = emailFormElement.querySelector(".submit-button");
 
   // Check if submit button exists
   if (!submitButton) {
     return console.error("Button with class 'submit-button' not found.");
   }
-
-  console.log("Email form found.");
 
   // Add event listener for submit button
   submitButton.addEventListener("click", (event) => {
@@ -104,12 +111,20 @@ async function addEmailToDatabase(email) {
 
     if (!docRef) {
       console.error("Document reference is undefined");
+      alert("Error adding email to database. Please try again later.");
       return;
     }
 
     console.log("Added email to database: ", email);
     console.log("Document written with ID: ", docRef.id);
+    showSubmissionSuccessMessage();
   } catch (error) {
     console.error("Error adding document: ", error);
+    alert("Error adding email to database. Please try again later.");
   }
+}
+
+function showSubmissionSuccessMessage() {
+  emailFormElement.style.display = "none";
+  submittedMessageElement.style.display = "block";
 }
