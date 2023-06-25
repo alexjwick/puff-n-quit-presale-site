@@ -17,10 +17,13 @@ const db = getFirestore(app);
 
 let emailFormElement = null;
 let submittedMessageElement = null;
+let emailInput = null;
+let submitButton = null;
+
+let submissionLock = true; // Used to prevent multiple submissions from spamming the submit button or the enter key
 
 window.onload = () => {
-  console.log("Page loaded.");
-  // Get email form
+  // Get email form and submitted message elements
   emailFormElement = document.querySelector(".email-form");
   submittedMessageElement = document.querySelector(".submitted-message");
 
@@ -35,7 +38,7 @@ window.onload = () => {
   }
 
   // Get email input field
-  const emailInput = emailFormElement.querySelector(".email-input");
+  emailInput = emailFormElement.querySelector(".email-input");
 
   // Check if email input field exists
   if (!emailInput) {
@@ -43,7 +46,7 @@ window.onload = () => {
   }
 
   // Get submit button
-  const submitButton = emailFormElement.querySelector(".submit-button");
+  submitButton = emailFormElement.querySelector(".submit-button");
 
   // Check if submit button exists
   if (!submitButton) {
@@ -52,14 +55,18 @@ window.onload = () => {
 
   // Add event listener for submit button
   submitButton.addEventListener("click", (event) => {
+    if (submissionLock) return;
+    lockSubmission();
     event.preventDefault();
     handleEmailFormSubmit(emailInput);
   });
 
   // Add event listener for email input field for enter key
   emailInput.addEventListener("keypress", (event) => {
+    if (submissionLock) return;
     // If the user presses the "Enter" key on the keyboard
     if (event.key === "Enter") {
+      lockSubmission();
       event.preventDefault();
       handleEmailFormSubmit(emailInput);
     }
@@ -74,8 +81,8 @@ window.onload = () => {
     }
   });
 
-  // Initially disable the button
-  submitButton.disabled = emailInput.value.trim() === "" ? true : false;
+  // Unlock submission
+  unlockSubmission();
 };
 
 /**
@@ -86,14 +93,17 @@ function handleEmailFormSubmit(emailInput) {
   // Validate email
   const email = emailInput.value.trim();
   if (!email) {
+    unlockSubmission();
     return;
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
+    unlockSubmission();
     return console.error("Invalid email entered."); //TODO: Display error message to user
   }
 
-  emailInput.value = "";
+  // Disable email form and add email to database
+  disableEmailForm();
   console.log("Collected email:", email);
   addEmailToDatabase(email);
 }
@@ -105,26 +115,72 @@ function handleEmailFormSubmit(emailInput) {
  */
 async function addEmailToDatabase(email) {
   try {
+    // Add a new document with a generated id
     const docRef = await addDoc(collection(db, "emails"), {
       email: email,
     });
 
+    // Check if document reference is undefined
     if (!docRef) {
       console.error("Document reference is undefined");
       alert("Error adding email to database. Please try again later.");
+      enableEmailForm();
+      unlockSubmission();
       return;
     }
 
+    // Log success message
     console.log("Added email to database: ", email);
-    console.log("Document written with ID: ", docRef.id);
     showSubmissionSuccessMessage();
   } catch (error) {
+    // Log error message
     console.error("Error adding document: ", error);
     alert("Error adding email to database. Please try again later.");
+
+    // Re-enable email form and unlock submission
+    enableEmailForm();
+    unlockSubmission();
   }
 }
 
+/**
+ * Shows the submission success message
+ * @returns void
+ */
 function showSubmissionSuccessMessage() {
   emailFormElement.style.display = "none";
+  emailInput.value = "";
   submittedMessageElement.style.display = "block";
+}
+
+/**
+ * Disables the email form
+ * @returns void
+ */
+function disableEmailForm() {
+  emailInput.disabled = true;
+}
+
+/**
+ * Enables the email form
+ * @returns void
+ */
+function enableEmailForm() {
+  emailInput.disabled = false;
+}
+
+/**
+ * Locks the submission
+ * @returns void
+ */
+function lockSubmission() {
+  submissionLock = true;
+}
+
+/**
+ * Unlocks the submission
+ * @returns void
+ */
+function unlockSubmission() {
+  submissionLock = false;
 }

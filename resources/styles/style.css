@@ -171,6 +171,10 @@ p {
   font-weight: 200;
 }
 
+.email-input:disabled {
+  background: #e2e2e2;
+}
+
 .email-input:invalid {
   border-color: #ff3666;
 }
@@ -191,7 +195,7 @@ p {
 
 .submit-button:disabled {
   color: #909090;
-  background: #c3c3c3;
+  background: #d8d8d8;
   font-weight: 200;
 }
 
