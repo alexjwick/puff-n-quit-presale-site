@@ -53,6 +53,9 @@ window.onload = () => {
     return console.error("Button with class 'submit-button' not found.");
   }
 
+  // Hide submitted message
+  submittedMessageElement.style.display = "none";
+
   // Add event listener for submit button
   submitButton.addEventListener("click", (event) => {
     if (submissionLock) return;
@@ -144,7 +147,7 @@ async function addEmailToDatabase(email) {
 }
 
 /**
- * Shows the submission success message
+ * Shows the submission success message and hides the email form
  * @returns void
  */
 function showSubmissionSuccessMessage() {
