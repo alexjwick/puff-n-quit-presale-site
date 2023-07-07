@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  Timestamp,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkhSb61yqK8Q2BaVUAV5ShYsThvrt_cvc", // This is a public key
@@ -23,6 +28,12 @@ let submitButton = null;
 let submissionLock = true; // Used to prevent multiple submissions from spamming the submit button or the enter key
 
 window.onload = () => {
+  // Get referral code
+  const referralCode = getReferralCode();
+  if (referralCode) {
+    addReferralCodeToDatabase(referralCode);
+  }
+
   // Get email form and submitted message elements
   emailFormElement = document.querySelector(".email-form");
   submittedMessageElement = document.querySelector(".submitted-message");
@@ -89,6 +100,49 @@ window.onload = () => {
 };
 
 /**
+ * Adds the referral code to the database
+ * @param {string} referralCode The referral code to add to the database
+ * @returns
+ */
+async function addReferralCodeToDatabase(referralCode) {
+  try {
+    // Add a new document with a generated id
+    const docRef = await addDoc(collection(db, "referrals"), {
+      referral: referralCode,
+      timestamp: Timestamp.now(),
+    });
+
+    // Check if document reference is undefined
+    if (!docRef) {
+      console.error("Document reference is undefined");
+      alert("Error adding referral to database. Please try again later.");
+      return;
+    }
+  } catch (error) {
+    // Log error message
+    console.error("Error adding document: ", error);
+  }
+}
+
+/**
+ * Gets the referral code from the URL
+ */
+function getReferralCode() {
+  const urlParams = getURLSearchParams();
+  const referralCode = urlParams.get("referral");
+  return referralCode;
+}
+
+/**
+ * Gets the URL search parameters
+ */
+function getURLSearchParams() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams;
+}
+
+/**
  * Handles the email form submit event
  * @returns void
  */
@@ -107,20 +161,20 @@ function handleEmailFormSubmit(emailInput) {
 
   // Disable email form and add email to database
   disableEmailForm();
-  console.log("Collected email:", email);
-  addEmailToDatabase(email);
+  addEmailToWaitlistDatabase(email);
 }
 
 /**
- * Adds an email to the database
- * @param email The email to add
+ * Adds an email to the waitlist database
+ * @param {string} email The email to add
  * @returns void
  */
-async function addEmailToDatabase(email) {
+async function addEmailToWaitlistDatabase(email) {
   try {
     // Add a new document with a generated id
-    const docRef = await addDoc(collection(db, "emails"), {
+    const docRef = await addDoc(collection(db, "waitlist"), {
       email: email,
+      timestamp: Timestamp.now(),
     });
 
     // Check if document reference is undefined
@@ -131,9 +185,6 @@ async function addEmailToDatabase(email) {
       unlockSubmission();
       return;
     }
-
-    // Log success message
-    console.log("Added email to database: ", email);
     showSubmissionSuccessMessage();
   } catch (error) {
     // Log error message
