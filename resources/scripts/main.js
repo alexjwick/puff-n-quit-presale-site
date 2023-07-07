@@ -27,9 +27,11 @@ let submitButton = null;
 
 let submissionLock = true; // Used to prevent multiple submissions from spamming the submit button or the enter key
 
+let referralCode = "";
+
 window.onload = () => {
   // Get referral code
-  const referralCode = getReferralCode();
+  referralCode = getReferralCode();
   if (referralCode) {
     addReferralCodeToDatabase(referralCode);
   }
@@ -174,6 +176,7 @@ async function addEmailToWaitlistDatabase(email) {
     // Add a new document with a generated id
     const docRef = await addDoc(collection(db, "waitlist"), {
       email: email,
+      referral: referralCode,
       timestamp: Timestamp.now(),
     });
 
